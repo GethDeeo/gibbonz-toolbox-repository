@@ -5,4 +5,4 @@ Remove-RegistryEntry -Path 'HKCU:\Console\Git CMD' -WarningAction SilentlyContin
 Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Git\*" -Include 'Git FAQs (Frequently Asked Questions).url', 'Git Release Notes.lnk'
 
 Update-Module -Scope AllUsers -Name posh-git
-Uninstall-ModuleOldVersions -Name posh-git
+Uninstall-ModuleOldVersion -Name posh-git
