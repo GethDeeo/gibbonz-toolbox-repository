@@ -1,0 +1,4 @@
+# shellcheck shell=bash
+# shellcheck source=/dev/null
+. "$HOME/.venv/bin/activate"
+pip-review --auto

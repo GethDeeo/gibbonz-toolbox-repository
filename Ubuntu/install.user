@@ -1,0 +1,31 @@
+# shellcheck shell=bash
+tee --append "$HOME/.bashrc" <<'EOF'
+
+[ ! -d "$HOME/.ssh" -a -d "$USERPROFILE/.ssh" ] && ln --symbolic "$USERPROFILE/.ssh" "$HOME/.ssh"
+if [ -L "$HOME/.ssh" ]; then
+  find -H "$HOME/.ssh" -mindepth 1 -type f -name 'id_*' ! -name 'id_*.*' ! -perm 0600 -exec chmod 0600 {} \;
+  export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
+  if ! ss --all | grep --quiet "\s\+$SSH_AUTH_SOCK\s\+"; then
+    rm --force "$SSH_AUTH_SOCK"
+    (setsid socat "UNIX-LISTEN:$SSH_AUTH_SOCK,fork,umask=077" "EXEC:$SystemRoot/npiperelay.exe -ei -s //./pipe/openssh-ssh-agent,nofork" &) > /dev/null 2>&1
+  fi
+fi
+
+find "$USERPROFILE" -mindepth 1 -maxdepth 1 -type f \( -name .gitconfig -o -name '.gitconfig.*' \) -exec ln --force --symbolic --target-directory="$HOME" {} \;
+find "$HOME" -mindepth 1 -maxdepth 1 -xtype l \( -name .gitconfig -o -name '.gitconfig.*' \) -exec rm --force {} \;
+EOF
+
+python3 -m venv "$HOME/.venv"
+tee --append "$HOME/.bashrc" <<'EOF'
+
+. "$HOME/.venv/bin/activate"
+EOF
+# shellcheck source=/dev/null
+. "$HOME/.venv/bin/activate"
+pip install --upgrade --upgrade-strategy eager pip
+pip install pip-autoremove
+pip install pip-review
+pip install wheel
+pip install ansible
+pip install ansible-lint
+pip-review --auto

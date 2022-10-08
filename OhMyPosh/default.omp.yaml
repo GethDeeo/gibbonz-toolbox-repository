@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+version: 2
+$schema: https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+final_space: true
+console_title_template: "{{if .Root}}# {{end}}{{.UserName}}@{{.HostName}}: {{.Folder}}"
+blocks:
+  # 1st line left
+  - type: prompt
+    alignment: left
+    segments:
+      - type: session
+        style: powerline
+        powerline_symbol: "\ue0c6"
+        background: darkGray
+        template: "\u2800{{if .SSHSession}}\uf817 {{end}}{{if .Root}}<red>\uf234{{else}}<green>\uf007{{end}} <b>{{.UserName}}</b></>@{{.HostName}}"
+      - type: os
+        style: powerline
+        powerline_symbol: "\ue0c6"
+        foreground: transparent
+        background: blue
+        template: "\u2800{{if .WSL}}\ue70f/{{end}}{{.Icon}}  "
+        properties:
+          windows: "\ue70f"
+      - type: path
+        style: powerline
+        powerline_symbol: "\ue0c6"
+        foreground: transparent
+        background: yellow
+        template: "\u2800\uf74a {{path .Path .Location}} "
+        properties:
+          style: agnoster_full
+      - type: git
+        style: powerline
+        powerline_symbol: "\ue0c6"
+        foreground_templates:
+          - "{{if or (.Working.Changed) (.Staging.Changed)}}lightYellow{{end}}"
+          - "{{if lt 0 .Behind}}lightCyan{{end}}"
+          - "{{if lt 0 .Ahead}}lightMagenta{{end}}"
+        background: "#2f2f2f"
+        template: "\u2800{{.UpstreamIcon}} {{.HEAD}} {{.BranchStatus}}{{if .Working.Changed}} \uf044 <lightRed>{{.Working.String}}</>{{end}}{{if and (.Working.Changed) (.Staging.Changed)}} |{{end}}{{if .Staging.Changed}} \uf046 <lightGreen>{{.Staging.String}}</>{{end}}{{if lt 0 .StashCount}} \uf692 {{.StashCount}}{{end}}{{if lt 0 .WorktreeCount}} \uf1bb {{.WorktreeCount}}{{end}} "
+        properties:
+          fetch_status: true
+          fetch_stash_count: true
+          fetch_worktree_count: true
+          fetch_upstream_icon: true
+  # 1st line right
+  - type: prompt
+    alignment: right
+    segments:
+      - type: java
+        style: powerline
+        powerline_symbol: "\ue0c6"
+        foreground: transparent
+        background: yellow
+        template: "{{if .Env.JAVA_HOME}}\u2800\ue256 {{if .Error}}{{.Error}}{{else}}{{path .Full .Env.JAVA_HOME}}{{end}} {{end}}"
+        properties:
+          home_enabled: true
+          display_mode: always
+      - type: python
+        style: powerline
+        powerline_symbol: "\ue0c6"
+        foreground: transparent
+        background: yellow
+        template: "\u2800\ue235 {{if .Error}}{{.Error}}{{else}}{{if .Venv}}{{.Venv}} {{end}}{{.Full}}{{end}} "
+      - type: shell
+        style: powerline
+        powerline_symbol: "\ue0c6"
+        foreground: transparent
+        background: blue
+        template: "\u2800\uf68c {{.Name}} {{.Version}} "
+      - type: time
+        style: powerline
+        powerline_symbol: "\ue0c6"
+        background: darkGray
+        template: "\u2800\uf64f {{.CurrentDate | date .Format}} "
+  # 2nd line left
+  - type: prompt
+    newline: true
+    alignment: left
+    segments:
+      - type: text
+        style: plain
+        template: "{{if .Root}}<red>#{{else}}<green>${{end}}</>"
+  # 2nd line right
+  - type: rprompt
+    segments:
+      - type: exit
+        style: plain
+        template: " \uf705 {{if eq 0 .Code}}<green>\uf632</>{{else}}<red>\uf06a {{.Meaning}}</>{{end}} "
+        properties:
+          always_enabled: true
+      - type: executiontime
+        style: plain
+        template: "<red>\ue0c3</>  \uf650 {{.FormattedMs}} <red>\ue0c1</> "

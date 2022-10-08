@@ -1,0 +1,3 @@
+# shellcheck shell=bash
+apt-get update
+apt-get --assume-yes --with-new-pkgs --purge --auto-remove upgrade

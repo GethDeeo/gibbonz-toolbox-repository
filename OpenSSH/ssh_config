@@ -1,0 +1,13 @@
+Host *
+  Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+  GlobalKnownHostsFile __PROGRAMDATA__/ssh/ssh_known_hosts
+  HostKeyAlgorithms ssh-ed25519,ssh-rsa
+  IdentitiesOnly yes
+  KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+  MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+  PreferredAuthentications publickey,keyboard-interactive,password
+  PubkeyAcceptedKeyTypes ssh-ed25519,ssh-rsa
+  SendEnv LANG LC_* COLORTERM WT_SESSION
+  ServerAliveCountMax 2
+  ServerAliveInterval 300
+  UserKnownHostsFile ~/.ssh/known_hosts

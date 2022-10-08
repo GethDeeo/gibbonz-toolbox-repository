@@ -1,0 +1,1 @@
+Defaults:%sudo env_keep += "VISUAL EDITOR"

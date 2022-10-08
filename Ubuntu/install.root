@@ -1,0 +1,46 @@
+# shellcheck shell=bash
+cp ./sudoers /etc/sudoers.d/default
+chmod 0644 /etc/sudoers.d/default
+cp ./gai.conf /etc
+
+cp ./ssh_config /etc/ssh/ssh_config.d/default.conf
+touch /etc/ssh/ssh_known_hosts
+chmod 0644 /etc/ssh/ssh_config.d/default.conf /etc/ssh/ssh_known_hosts
+
+cp ./gitconfig /etc
+chmod 0644 /etc/gitconfig
+
+cp ./.vimrc /etc/skel
+chmod 0644 /etc/skel/.vimrc
+mkdir --mode=0755 /etc/skel/.config
+mkdir --mode=0755 /etc/skel/.config/htop
+cp ./htoprc /etc/skel/.config/htop
+chmod 0644 /etc/skel/.config/htop/htoprc
+mkdir --mode=0755 /etc/skel/.config/mc
+cp ./mc-ini /etc/skel/.config/mc/ini
+cp ./mc-panels.ini /etc/skel/.config/mc/panels.ini
+chmod 0644 /etc/skel/.config/mc/ini /etc/skel/.config/mc/panels.ini
+cp --no-clobber --recursive --no-target-directory /etc/skel /root
+
+apt-get --assume-yes --auto-remove purge cloud-init landscape-common lxd-agent-loader snapd
+delgroup lxd
+rm --force --recursive /etc/cloud
+sed --expression 's;:/snap/bin;;' --in-place /etc/sudoers
+sed --expression 's;:/snap/bin;;' --in-place /etc/environment
+
+mkdir --mode=0755 /opt/bin
+sed --expression 's;^PATH="\(.\+\)"$;PATH="\1:/opt/bin";' --in-place /etc/environment
+cp ./opt-bin.sh /etc/profile.d
+chmod 0644 /etc/profile.d/opt-bin.sh
+
+add-apt-repository --yes --ppa git-core/ppa
+rm --force /etc/apt/trusted.gpg.d/*.gpg~
+apt-get --assume-yes --with-new-pkgs --purge --auto-remove upgrade
+apt-get --assume-yes --purge --auto-remove install mc socat shellcheck python3.10-venv
+
+npiperelayZip="$(mktemp --suffix=.zip)"
+curl --location --output "$npiperelayZip" https://github.com/jstarks/npiperelay/releases/latest/download/npiperelay_windows_amd64.zip
+# shellcheck disable=SC2154
+unzip -u "$npiperelayZip" npiperelay.exe -d "$SystemRoot"
+chmod 0755 "$SystemRoot/npiperelay.exe"
+rm --force "$npiperelayZip"

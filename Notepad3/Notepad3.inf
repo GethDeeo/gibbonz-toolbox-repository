@@ -1,0 +1,2 @@
+[Setup]
+Tasks=startup_icon,set_default,set_openwith

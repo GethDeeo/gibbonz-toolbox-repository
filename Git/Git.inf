@@ -1,0 +1,10 @@
+[Setup]
+BashTerminalOption=ConHost
+Components=gitlfs,assoc
+CRLFOption=LFOnly
+CURLOption=WinSSL
+DefaultBranchOption=main
+EnableFSMonitor=Enabled
+EnableSymlinks=Enabled
+SSHOption=ExternalOpenSSH
+UseCredentialManager=Disabled
