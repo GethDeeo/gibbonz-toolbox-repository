@@ -1,6 +1,5 @@
 if ((Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux, VirtualMachinePlatform -All -NoRestart -LogLevel Warnings).RestartNeeded) {
   New-RegistryEntry -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce -Name Ubuntu
-  Write-Warning -Message 'To continue the install process, restart the system and run: "Install-Program -Name Ubuntu"'
   return
 }
 & wsl.exe --set-default-version 2
