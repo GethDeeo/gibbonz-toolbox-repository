@@ -16,7 +16,7 @@ if (Test-Path -LiteralPath $terminalSettingsPath -PathType Leaf) {
 & winget.exe install --accept-package-agreements --accept-source-agreements --source msstore --exact --id 9PN20MSR04DW
 
 if ($terminalSettings) {
-  $terminalSettings.profiles.list = @($terminalSettings.profiles.list[0]) + @([PSCustomObject]@{ 'guid' = '{f9ceaf27-504c-58d7-927c-d1d6a7ac7d3c}' }) + @($terminalSettings.profiles.list[1..($terminalSettings.profiles.list.Length)])
+  $terminalSettings.profiles.list = @($terminalSettings.profiles.list[0]) + @([PSCustomObject]@{ guid = '{f9ceaf27-504c-58d7-927c-d1d6a7ac7d3c}' }) + @($terminalSettings.profiles.list[1..($terminalSettings.profiles.list.Length)])
   ConvertTo-Json -InputObject $terminalSettings -Depth 100 | Set-Content -LiteralPath $terminalSettingsPath -Force -Verbose -ErrorAction Stop
 }
 
