@@ -9,7 +9,7 @@ New-RegistryEntry -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\
 $terminalSettingsPath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 if (Test-Path -LiteralPath $terminalSettingsPath -PathType Leaf) {
   $terminalSettings = Get-Content -LiteralPath $terminalSettingsPath -Raw | ConvertFrom-Json
-  $terminalSettings.profiles.defaults.font.face = 'CaskaydiaCove NF'
+  $terminalSettings.profiles.defaults | Add-Member -MemberType NoteProperty -Name font -Value ([PSCustomObject]@{ face = 'CaskaydiaCove NF' }) -Force
   ConvertTo-Json -InputObject $terminalSettings -Depth 100 | Set-Content -LiteralPath $terminalSettingsPath -Force -Verbose -ErrorAction Stop
 }
 
