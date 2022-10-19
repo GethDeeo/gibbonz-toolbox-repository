@@ -7,7 +7,7 @@ if (!(Test-Path -LiteralPath $env:ProgramFiles\jdk-17\bin\java.exe -PathType Lea
   Remove-Item -LiteralPath $env:ProgramFiles\jdk-17 -Force -ErrorAction SilentlyContinue
   $javaHome17 = [Environment]::GetEnvironmentVariable('JAVA_HOME', [EnvironmentVariableTarget]::Machine)
   New-Item -ItemType Junction -Path $env:ProgramFiles\jdk-17 -Target $javaHome17 > $null
-  Get-NetFirewallRule -DisplayName jdk-17 | Get-NetFirewallApplicationFilter | Set-NetFirewallApplicationFilter -Program $javaHome17 -Verbose
+  Get-NetFirewallRule -DisplayName jdk-17 | Get-NetFirewallApplicationFilter | Set-NetFirewallApplicationFilter -Program $javaHome17\bin\java.exe -Verbose
 }
 
 New-RegistryEntry -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment' -Name JAVA_HOME -Type ExpandString -Value $javaHome
