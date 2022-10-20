@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 cp ./sudoers /etc/sudoers.d/default
-chmod 0644 /etc/sudoers.d/default
+chmod 0440 /etc/sudoers.d/default
 cp ./gai.conf /etc
 
 cp ./ssh_config /etc/ssh/ssh_config.d/default.conf
